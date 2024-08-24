@@ -4,6 +4,30 @@
     <meta charset="UTF-8">
     <title>Customer Churn Prediction</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script>
+        function validateFileUpload() {
+            const fileInput = document.querySelector('input[name="new_data_file"]');
+            const errorMessage = document.getElementById('file-upload-error');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                errorMessage.textContent = "Please upload a file before clicking 'Upload and Retrain'.";
+                return false;
+            }
+
+            const fileName = file.name;
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+
+            if (fileExtension !== 'csv') {
+                errorMessage.textContent = "Please upload a valid .csv file.";
+                return false;
+            }
+
+            // Clear the error message if validation passes
+            errorMessage.textContent = "";
+            return true;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -55,11 +79,13 @@
             <h2>{{ prediction_text }}</h2>
         {% endif %}
 
-            <!-- New Section: Model Retraining Form -->
-        <form action="/retrain" method="post" enctype="multipart/form-data">
+        <!-- New Section: Model Retraining Form -->
+        <form action="/retrain" method="post" enctype="multipart/form-data" onsubmit="return validateFileUpload()">
             <input type="file" name="new_data_file">
             <button type="submit">Upload and Retrain</button>
-        </form>        
+        </form>
+            
+        <p id="file-upload-error" style="color: red;">{{ retrain_error }}</p> <!-- Error message placeholder --> 
 
             <!-- New Section: Button to Evaluation Page -->
         <div style="margin-top: 20px;">
@@ -67,6 +93,7 @@
         </div>
 
         <h2>Data Visualizations</h2>
+        {% if prediction_text %}
         <div class="visualizations">
             <div style="margin-bottom: 20px;">
                 <img src="data:image/png;base64,{{ plot_url_tenure }}" alt="Tenure Distribution" style="width: 1000px; height: 600px;">
@@ -78,6 +105,7 @@
                 <img src="data:image/png;base64,{{ plot_url_correlation_matrix }}" alt="Correlation Matrix" style="width: 1000px; height: 600px;">
             </div>
         </div>
+        {% endif %}
     </div>
 </body>
 </html>

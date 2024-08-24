@@ -2,6 +2,7 @@ import os
 import logging
 import pandas as pd
 import pickle
+import matplotlib
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
@@ -15,19 +16,10 @@ from io import BytesIO
 import base64
 from flask import Flask, render_template, request, redirect, url_for, Response
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-import unittest
-from app import evaluate_model_on_test_data
 
-class TestModelEvaluation(unittest.TestCase):
-    def test_evaluate_model_on_test_data(self):
-        metrics = evaluate_model_on_test_data()
-        self.assertIn("accuracy", metrics)
-        self.assertIn("precision", metrics)
-        self.assertIn("recall", metrics)
-        self.assertIn("f1_score", metrics)
-        self.assertGreaterEqual(metrics["accuracy"], 0)
-        self.assertLessEqual(metrics["accuracy"], 1)
-        
+# Set the Matplotlib backend to 'Agg' for non-GUI rendering
+matplotlib.use('Agg')
+
 # Assuming the model is a RandomForestClassifier and was trained with certain features
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 
@@ -171,17 +163,29 @@ def before_request():
 
 @app.route('/retrain', methods=['POST'])
 def retrain():
-    # Assuming the new data is uploaded as a file
-    if 'new_data_file' in request.files:
-        file = request.files['new_data_file']
-        filepath = os.path.join('data/processed/', file.filename)
+    if 'new_data_file' not in request.files or request.files['new_data_file'].filename == '':
+        return render_template('index.html', retrain_error="Please upload a valid .csv file.")
+    
+    file = request.files['new_data_file']
+    
+    if not file.filename.endswith('.csv'):
+        return render_template('index.html', retrain_error="Please upload a valid .csv file.")
+
+    # Ensure directory exists
+    directory = 'data/processed/'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
+    filepath = os.path.join(directory, file.filename)
+    
+    try:
         file.save(filepath)
-        
         # Retrain the model with the new data
         retrain_model(filepath)
-        
         return redirect(url_for('home'))
-    return "No file uploaded", 400
+    except Exception as e:
+        logging.error(f"Error during retraining: {e}")
+        return render_template('index.html', retrain_error="An error occurred during retraining.")
 
 @app.route('/evaluate')
 def evaluate():
@@ -326,4 +330,3 @@ def predict():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    unittest.main()
