@@ -149,7 +149,7 @@ Contributions are welcome! Fork the repository and create a pull request to cont
 
 ## License
 
-This project is licensed under a proprietary license. Unauthorized copying, distribution, modification, or use of this software is strictly prohibited without the explicit permission of the author.
+MIT License
 
 For more details, see the [LICENSE](LICENSE) file.
 
