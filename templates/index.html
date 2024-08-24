@@ -47,6 +47,10 @@
             <button type="submit">Predict</button>
         </form>
 
+        {% if metrics_text %}
+        <h2>{{ metrics_text }}</h2>
+        {% endif %}
+
         {% if prediction_text %}
             <h2>{{ prediction_text }}</h2>
         {% endif %}
@@ -57,11 +61,22 @@
             <button type="submit">Upload and Retrain</button>
         </form>        
 
+            <!-- New Section: Button to Evaluation Page -->
+        <div style="margin-top: 20px;">
+            <button onclick="window.location.href='{{ url_for('evaluate') }}'">Evaluate Model</button>
+        </div>
+
         <h2>Data Visualizations</h2>
         <div class="visualizations">
-            <img src="{{ url_for('static', filename='images/tenure_distribution.png') }}" alt="Tenure Distribution">
-            <img src="{{ url_for('static', filename='images/correlation_matrix.png') }}" alt="Correlation Matrix">
-            <img src="{{ url_for('static', filename='images/monthly_charges_boxplot.png') }}" alt="Monthly Charges Boxplot">
+            <div style="margin-bottom: 20px;">
+                <img src="data:image/png;base64,{{ plot_url_tenure }}" alt="Tenure Distribution" style="width: 1000px; height: 600px;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <img src="data:image/png;base64,{{ plot_url_monthly_charges }}" alt="Monthly Charges Boxplot" style="width: 1000px; height: 600px;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <img src="data:image/png;base64,{{ plot_url_correlation_matrix }}" alt="Correlation Matrix" style="width: 1000px; height: 600px;">
+            </div>
         </div>
     </div>
 </body>

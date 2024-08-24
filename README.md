@@ -1,155 +1,119 @@
-# Customer Churn Prediction Application
+# Customer Churn Prediction
 
-This project is a web-based application designed to predict customer churn using machine learning. The application provides a user-friendly interface for making predictions, visualizing data, and retraining the predictive model with new customer data.
-
-## Features
-
-- **Predict Customer Churn:** Input customer data to predict whether they are likely to churn.
-- **Model Retraining:** Upload new datasets to retrain the machine learning model.
-- **Data Visualizations:** View key visualizations such as tenure distribution, correlation matrix, and monthly charges by churn status.
+This project is a web application that predicts customer churn using a RandomForest model. The application can be deployed on Heroku or run locally on a Windows environment. The application also includes features for visualizing data and evaluating the model.
 
 ## Table of Contents
 
+- [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Deployment](#deployment)
+- [Running Locally](#running-locally)
+- [Deploying to Heroku](#deploying-to-heroku)
+- [Model Retraining](#model-retraining)
+- [Evaluation](#evaluation)
 - [Contributing](#contributing)
 - [License](#license)
 
+## Features
+
+- Predict customer churn based on input data.
+- Visualize key metrics such as tenure distribution, monthly charges, and correlation matrix.
+- Evaluate the model on test data.
+- Retrain the model with new data.
+- Configured for deployment on Heroku and local Windows environments.
+
 ## Installation
 
-Follow these steps to set up the project on your local machine.
+### Requirements
 
-### 1. Clone the Repository
+- Python 3.8+
+- `virtualenv` for setting up a virtual environment (optional but recommended)
 
-```bash
-git clone https://github.com/yourusername/customer-churn-prediction.git
-cd customer-churn-prediction
+### Installation Steps
+
+1. Clone the repository:
+    ```
+    git clone https://github.com/your-repo/customer-churn-prediction.git
+    cd customer-churn-prediction
+    ```
+
+2. Create and activate a virtual environment:
+    ```
+    virtualenv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
+
+3. Install dependencies:
+    - For Windows:
+        ```
+        pip install -r requirements-windows.txt
+        ```
+    - For other platforms:
+        ```
+        pip install -r requirements.txt
+        ```
+
+## Running Locally
+
+### Start the Application
+
+To run the application locally, use the following command:
+   ```
+   python app.py
+   ```
+
+## Access the Application
+ - Navigate to http://127.0.0.1:5000 in your web browser.
+
+ Important Note
+ - When running in a local or virtual environment, ensure that the application uses http instead of https to avoid SSL-related issues.
+
+ ## Deploying to Heroku
+
+## Prerequisites
+ - Heroku CLI installed and logged in.
+
+ ## Deployment Steps
+
+1. Create a new Heroku application:
+```
+heroku create your-app-name
 ```
 
-### 2. Set Up a Virtual Environment
-
-Create and activate a virtual environment to manage dependencies.
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+2. Set the buildpack to Python:
+```
+heroku buildpacks:set heroku/python
 ```
 
-### 3. Install Dependencies
-
-Install the necessary Python packages using the `requirements.txt` file.
-
-```bash
-pip install -r requirements.txt
+3. Push the code to Heroku:
+```
+git push heroku main
 ```
 
-## Usage
-
-### 1. Prepare Your Data
-
-Ensure your dataset is in CSV format with the following columns: `tenure`, `MonthlyCharges`, `Churn`, and other relevant features.
-
-### 2. Running the Application
-
-Start the Flask web server to run the application locally.
-
-```bash
-python app.py
+4. Set environment variables on Heroku if needed:
+```
+heroku config:set DATABASE_URL=your_database_url
+heroku config:set SECRET_KEY=your_secret_key
 ```
 
-Access the application in your web browser at `http://127.0.0.1:5000/`.
-
-### 3. Predict Customer Churn
-
-Use the web interface to input customer data and predict whether they will churn.
-
-### 4. Retrain the Model
-
-Upload a new CSV dataset to retrain the model. Navigate to the "Upload New Data for Model Retraining" section, upload the file, and click "Upload and Retrain Model".
-
-### 5. View Data Visualizations
-
-View visualizations such as the tenure distribution, correlation matrix, and monthly charges by churn status directly on the web interface.
-
-## Project Structure
-
-```plaintext
-customer-churn-prediction/
-├── app.py                       # Main Flask application
-├── data/
-│   ├── raw/                     # Raw data files
-│   └── processed/               # Processed data files
-├── models/
-│   └── churn_model.pkl          # Saved machine learning model
-├── static/
-│   ├── css/
-│   │   └── styles.css           # CSS styles
-│   └── images/                  # Data visualizations
-├── templates/
-│   └── index.html               # HTML template for the web interface
-├── generate_visualizations.py   # Script to generate visualizations
-├── data_preparation.py          # Script for data preparation
-├── requirements.txt             # Python dependencies
-└── README.md                    # Project documentation
+5. Open the application:
+```
+heroku open
 ```
 
-## Deployment
+## Model Retraining
+To retrain the model with new data:
 
-### Deploying to Heroku
+1. Upload a CSV file using the retraining form on the home page.
+2. The model will be retrained and saved.
 
-Follow these steps to deploy your application to Heroku.
+## Evaluation
+To evaluate the model:
 
-1. **Login to Heroku:**
-
-   ```bash
-   heroku login
-   ```
-
-2. **Create a Heroku Application:**
-
-   ```bash
-   heroku create your-app-name
-   ```
-
-3. **Deploy the Code:**
-
-   ```bash
-   git push heroku master
-   ```
-
-4. **Set Up a Procfile:**
-
-   Ensure there is a `Procfile` in the root directory with the following content:
-
-   ```plaintext
-   web: gunicorn app:app
-   ```
-
-5. **Scale the Web Server:**
-
-   ```bash
-   heroku ps:scale web=1
-   ```
-
-6. **Open Your Application:**
-
-   ```bash
-   heroku open
-   ```
-
-### Environment Variables
-
-Use the Heroku dashboard or CLI to set any necessary environment variables (e.g., `SECRET_KEY`, `DATABASE_URL`).
+1. Click on the "Evaluate Model" button on the home page.
+2. The evaluation metrics (Accuracy, Precision, Recall, F1 Score) will be displayed.
 
 ## Contributing
-
-Contributions are welcome! Fork the repository and create a pull request to contribute.
+Feel free to fork this repository, create a new branch, and submit a pull request with your changes.
 
 ## License
-
-MIT License
-
-For more details, see the [LICENSE](LICENSE) file.
-
+This project is licensed under the MIT License - see the LICENSE file for details.
