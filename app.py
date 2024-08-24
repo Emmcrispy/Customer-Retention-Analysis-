@@ -15,7 +15,19 @@ from io import BytesIO
 import base64
 from flask import Flask, render_template, request, redirect, url_for, Response
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import unittest
+from app import evaluate_model_on_test_data
 
+class TestModelEvaluation(unittest.TestCase):
+    def test_evaluate_model_on_test_data(self):
+        metrics = evaluate_model_on_test_data()
+        self.assertIn("accuracy", metrics)
+        self.assertIn("precision", metrics)
+        self.assertIn("recall", metrics)
+        self.assertIn("f1_score", metrics)
+        self.assertGreaterEqual(metrics["accuracy"], 0)
+        self.assertLessEqual(metrics["accuracy"], 1)
+        
 # Assuming the model is a RandomForestClassifier and was trained with certain features
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 
@@ -314,3 +326,4 @@ def predict():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    unittest.main()
