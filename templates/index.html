@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Churn Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Customer Churn Prediction</h1>
+        <form action="/predict" method="post">
+            <!-- Example Input Fields -->
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
+            <label for="SeniorCitizen">Senior Citizen:</label>
+            <select id="SeniorCitizen" name="SeniorCitizen">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label for="Partner">Partner:</label>
+            <select id="Partner" name="Partner">
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+            </select>
+
+            <label for="Dependents">Dependents:</label>
+            <select id="Dependents" name="Dependents">
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+            </select>
+
+            <!-- Add more input fields corresponding to dataset features -->
+
+            <label for="tenure">Tenure (months):</label>
+            <input type="number" id="tenure" name="tenure" required>
+
+            <label for="MonthlyCharges">Monthly Charges ($):</label>
+            <input type="number" step="0.01" id="MonthlyCharges" name="MonthlyCharges" required>
+
+            <!-- Continue adding fields for all necessary features -->
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction_text %}
+            <h2>{{ prediction_text }}</h2>
+        {% endif %}
+
+            <!-- New Section: Model Retraining Form -->
+        <form action="/retrain" method="post" enctype="multipart/form-data">
+            <input type="file" name="new_data_file">
+            <button type="submit">Upload and Retrain</button>
+        </form>        
+
+        <h2>Data Visualizations</h2>
+        <div class="visualizations">
+            <img src="{{ url_for('static', filename='images/tenure_distribution.png') }}" alt="Tenure Distribution">
+            <img src="{{ url_for('static', filename='images/correlation_matrix.png') }}" alt="Correlation Matrix">
+            <img src="{{ url_for('static', filename='images/monthly_charges_boxplot.png') }}" alt="Monthly Charges Boxplot">
+        </div>
+    </div>
+</body>
+</html>
