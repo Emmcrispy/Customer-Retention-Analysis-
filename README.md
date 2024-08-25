@@ -32,8 +32,8 @@ This project is a web application that predicts customer churn using a RandomFor
 
 1. Clone the repository:
     ```
-    git clone https://github.com/your-repo/customer-churn-prediction.git
-    cd customer-churn-prediction
+    git clone https://github.com/Emmcrispy/churn_prediction.git
+    cd churn_prediction
     ```
 
 2. Create and activate a virtual environment:
