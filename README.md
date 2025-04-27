@@ -1,4 +1,4 @@
-# Customer Churn Prediction
+# Customer Retention Analysis
 
 This project is a web application that predicts customer churn using a RandomForest model. The application can be deployed on Heroku or run locally on a Windows environment. The application also includes features for visualizing data and evaluating the model.
 
